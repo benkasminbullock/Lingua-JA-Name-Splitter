@@ -12,6 +12,7 @@ WriteMakefile (
     AUTHOR => 'Ben Bullock <bkb@cpan.org>',
     LICENSE => 'perl',
     PREREQ_PM => {
+        'Lingua::JA::Moji' => '0.15',
     },
     META_MERGE => {
         resources => {
