@@ -76,19 +76,6 @@ sub split_kanji_name
     return ($family, $given);
 }
 
-=head2 split_romaji_name
-
-    my ($first, $last) = split_japanese_name ('KATSU, Shintaro');
-    # $first = Shintaro, $last = KATSU
-    my ($first, $last) = split_japanese_name ('Risa Yoshiki');
-    # $first = Risa, $last = Yoshiki
-
-Given a string containing a name of a Japanese person in romanized
-form, try to guess which part is the first and which part is the last
-name.
-
-=cut
-
 sub split_romaji_name
 {
     my ($name) = @_;

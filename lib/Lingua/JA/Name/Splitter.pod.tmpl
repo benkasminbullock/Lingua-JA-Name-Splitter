@@ -2,20 +2,35 @@
 
 =head1 NAME
 
-Lingua::JA::Name::Splitter - split a Japanese name into given and family name
+Lingua::JA::Name::Splitter - split a Japanese name into given and family
 
 =head1 SYNOPSIS
 
-    use Lingua::JA::Name::Splitter 'split_name';
-    my ($family, $given) = split_name ('風太郎');
+    use Lingua::JA::Name::Splitter 'split_kanji_name';
+    my ($family, $given) = split_kanji_name ('風太郎');
     # Now $family = 風 and $given = 太郎.
 
 =head1 FUNCTIONS
 
-=head2 split_name
+=head2 split_kanji_name
 
-    my ($family, $given) = split_name ('渡辺純子');
+    my ($family, $given) = split_kanji_name ('渡辺純子');
 
-This splits the name using some heuristics.
+This splits the name using some heuristics. At the time of writing,
+this module has not been tested extensively, so the heuristics will be
+subject to change as more data is received.
+
+=head2 split_romaji_name
+
+    my ($first, $last) = split_japanese_name ('KATSU, Shintaro');
+    # $first = Shintaro, $last = KATSU
+    my ($first, $last) = split_japanese_name ('Risa Yoshiki');
+    # $first = Risa, $last = Yoshiki
+
+Given a string containing a name of a Japanese person in romanized
+form, try to guess which part is the first and which part is the last
+name.
+
+=cut
 
 [% INCLUDE "author" %]
