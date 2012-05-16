@@ -1,10 +1,10 @@
 package Lingua::JA::Name::Splitter;
 require Exporter;
 @ISA = qw(Exporter);
-@EXPORT_OK = qw/split_name/;
+@EXPORT_OK = qw/split_kanji_name split_romaji_name/;
 use warnings;
 use strict;
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 use utf8;
 use Carp;
 use Lingua::JA::Moji ':all';
@@ -22,7 +22,7 @@ while (<$in>) {
 }
 close $in or die $!;
 
-sub split_name
+sub split_kanji_name
 {
     my ($kanji) = @_;
     my $given;
@@ -74,6 +74,48 @@ sub split_name
         croak "Return value is array";
     }
     return ($family, $given);
+}
+
+=head2 split_romaji_name
+
+    my ($first, $last) = split_japanese_name ('KATSU, Shintaro');
+    # $first = Shintaro, $last = KATSU
+    my ($first, $last) = split_japanese_name ('Risa Yoshiki');
+    # $first = Risa, $last = Yoshiki
+
+Given a string containing a name of a Japanese person in romanized
+form, try to guess which part is the first and which part is the last
+name.
+
+=cut
+
+sub split_romaji_name
+{
+    my ($name) = @_;
+    # If there is no space or comma, assume that this is the last name.
+    if ($name !~ /\s|,/) {
+        return ('', $name);
+    }
+    # Remove leading and trailing spaces.
+    $name =~ s/^\s+|\s+$//g;
+    my @parts = split /,?\s+/, $name;
+    # If there are more than two parts to the name after splitting by spaces
+    if (@parts > 2) {
+        warn "Strange Japanese name '$name' with middle name?";
+    }
+    my $last;
+    my $first;
+    # If the last name is capitalized, or if there is a comma in the
+    # name.
+    if ($parts[0] =~ /^[A-Z]+$/ || $name =~ /,/) {
+        $last = $parts[0];
+        $first = $parts[1];
+    }
+    else {
+        $last = $parts[1];
+        $first = $parts[0];
+    }
+    return ($first, $last);
 }
 
 1;

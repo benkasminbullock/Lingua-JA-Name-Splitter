@@ -3,12 +3,13 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 my $pm = 'lib/Lingua/JA/Name/Splitter.pm';
+my $pod = 'lib/Lingua/JA/Name/Splitter.pod';
 my $repo = 'https://github.com/benkasminbullock/Lingua-JA-Name-Splitter';
 
 WriteMakefile (
     NAME => 'Lingua::JA::Name::Splitter',
     VERSION_FROM => $pm,
-    ABSTRACT_FROM => $pm,
+    ABSTRACT_FROM => $pod,
     AUTHOR => 'Ben Bullock <bkb@cpan.org>',
     LICENSE => 'perl',
     PREREQ_PM => {

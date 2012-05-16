@@ -6,8 +6,9 @@ Lingua::JA::Name::Splitter - split a Japanese name into given and family name
 
 =head1 SYNOPSIS
 
-    use Lingua::JA::Name::Splitter 'split_kanji_name';
-    my ($family, $given) = split_name ('
+    use Lingua::JA::Name::Splitter 'split_name';
+    my ($family, $given) = split_name ('風太郎');
+    # Now $family = 風 and $given = 太郎.
 
 =head1 FUNCTIONS
 
