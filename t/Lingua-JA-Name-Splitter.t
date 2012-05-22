@@ -20,6 +20,7 @@ my %names = (
     市塚ひろ子 => 2,
     団令子 => 1,
     風太郎 => 1,
+    杉浦則夫 => 2,
 );
 
 for my $name (keys %names) {
@@ -34,7 +35,7 @@ my $name2 = 'Risa Yoshiki';
 
 my ($first1, $last1) = split_romaji_name ($name1);
 ok ($first1 eq 'Shintaro', "Split $name1 -> $first1 OK");
-ok ($last1 eq 'KATSU', "Split $name1 -> $last1 OK");
+ok ($last1 eq 'Katsu', "Split $name1 -> $last1 OK");
 
 my ($first2, $last2) = split_romaji_name ($name2);
 ok ($first2 eq 'Risa', "Split $name2 -> $first2 OK");

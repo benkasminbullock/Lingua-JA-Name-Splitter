@@ -79,29 +79,40 @@ sub split_kanji_name
 sub split_romaji_name
 {
     my ($name) = @_;
-    # If there is no space or comma, assume that this is the last name.
-    if ($name !~ /\s|,/) {
-        return ('', $name);
-    }
-    # Remove leading and trailing spaces.
-    $name =~ s/^\s+|\s+$//g;
-    my @parts = split /,?\s+/, $name;
-    # If there are more than two parts to the name after splitting by spaces
-    if (@parts > 2) {
-        warn "Strange Japanese name '$name' with middle name?";
-    }
     my $last;
     my $first;
-    # If the last name is capitalized, or if there is a comma in the
-    # name.
-    if ($parts[0] =~ /^[A-Z]+$/ || $name =~ /,/) {
-        $last = $parts[0];
-        $first = $parts[1];
+    if ($name !~ /\s|,/) {
+        if ($name =~ /^([A-Z][a-z]+)([A-Z]+)$/) {
+            $first = $1;
+            $last = $2;
+        }
+        else {
+            # If there is no space or comma, assume that this is the last name.
+            $first = '';
+            $last = $name;
+        }
     }
     else {
-        $last = $parts[1];
-        $first = $parts[0];
+        # Remove leading and trailing spaces.
+        $name =~ s/^\s+|\s+$//g;
+        my @parts = split /,?\s+/, $name;
+        # If there are more than two parts to the name after splitting by spaces
+        if (@parts > 2) {
+            warn "Strange Japanese name '$name' with middle name?";
+        }
+        # If the last name is capitalized, or if there is a comma in the
+        # name.
+        if ($parts[0] =~ /^[A-Z]+$/ || $name =~ /,/) {
+            $last = $parts[0];
+            $first = $parts[1];
+        }
+        else {
+            $last = $parts[1];
+            $first = $parts[0];
+        }
     }
+    $first = ucfirst lc $first;
+    $last = ucfirst lc $last;
     return ($first, $last);
 }
 
