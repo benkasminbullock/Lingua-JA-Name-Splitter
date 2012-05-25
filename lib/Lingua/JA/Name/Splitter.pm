@@ -22,51 +22,56 @@ while (<$in>) {
 }
 close $in or die $!;
 
+# The weight to give the position in the kanji if it is a known
+# kanji.
+
+our $length_weight = 0.73;
+
+# The cutoff for splitting the name
+
+our $split_cutoff = 0.5;
+
 sub split_kanji_name
 {
     my ($kanji) = @_;
     my $given;
     my $family;
-    if (! utf8::is_utf8 ($kanji)) {
-        croak "Input must be in Unicode format";
-    }
     if (length $kanji == 2) {
         ($given, $family) = split '', $kanji;
         goto finished;
     }
 
-    # The weight to give the position in the kanji if it is a known
-    # kanji.
-    my $length_weight = 0.5;
     my @kanji = split '', $kanji;
     # Probability this is part of the family name.
-    my %probability;
-    $probability{$kanji[0]} = 1;
-    $probability{$kanji[-1]} = 0;
+    my @probability;
+    $probability[0] = 1;
+    $probability[$#kanji] = 0;
     my $length = length $kanji;
     for my $i (1..$#kanji - 1) {
         my $p = 1 - $i / ($length - 1);
         my $moji = $kanji[$i];
         if (is_kana ($moji)) {
-            # Hiragana cannot be part of surname.
+            # Assume that hiragana is not part of surname (not correct
+            # in practice).
             $p = 0;
         }
         elsif ($known{$moji}) {
             $p = $length_weight * $p + (1 - $length_weight) * $known{$moji};
         }
-        $probability{$moji} = $p;
+        $probability[$i] = $p;
     }
+#    print "@probability\n";
+#    print "@kanji\n";
     my $in_given;
-    for my $kanji (@kanji) {
-#        print "$kanji: $probability{$kanji}\n";
-        if ($probability{$kanji} < 0.5) {
+    for my $i (0..$#kanji) {
+        if ($probability[$i] < $split_cutoff) {
             $in_given = 1;
         }
         if ($in_given) {
-            $given .= $kanji;
+            $given .= $kanji[$i];
         }
         else {
-            $family .= $kanji;
+            $family .= $kanji[$i];
         }
     }
     finished:
