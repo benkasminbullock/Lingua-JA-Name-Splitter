@@ -116,8 +116,10 @@ details.
 
 =head2 Build scripts
 
+The following build scripts are used by the module.
+
 [% MACRO rs(file) BLOCK -%]
-L<F<[% file %]>|[% info.repo %]/[% commit.commit %]/[% file %]>
+L<F<[% file %]>|[% info.repo %]/blob/[% commit.commit %]/[% file %]>
 [%- END %]
 
 The script which makes the dictionary, [% rs("enamdict-counter.pl")
