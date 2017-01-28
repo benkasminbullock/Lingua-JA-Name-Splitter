@@ -4,3 +4,6 @@ Makefile
 enamdict
 #
 split-names.txt
+# Generated from MANIFEST.SKIP
+MANIFEST
+examples/*-out.txt

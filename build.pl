@@ -3,6 +3,7 @@ use warnings;
 use strict;
 use Perl::Build;
 perl_build (
-    pod => ['lib/Lingua/JA/Name/Splitter.pod',],
+    make_pod => './make-pod.pl',
+    makefile => 'makeitfile',
 );
 exit;

@@ -1,11 +1,13 @@
 package Enamdict;
 use parent Exporter;
-our @EXPORT_OK = qw/parse_enamdict/;
+our @EXPORT_OK = qw/parse_enamdict read_names/;
 use warnings;
 use strict;
 use Carp;
 use FindBin;
 use Lingua::JA::Moji ':all';
+
+our $enamdict = '/home/ben/data/edrdg/enamdict';
 
 my $kanji_re = qr/
                      (
@@ -57,7 +59,7 @@ sub parse_enamdict
 {
     my (%inputs) = @_;
     my $kc = $inputs{kanji_callback};
-    my $input = "$FindBin::Bin/enamdict";
+    my $input = $enamdict;
     open my $in, "<:encoding(EUC-JP)", $input or die $!;
     while (<$in>) {
         if (/$kanji_name_re/) {
@@ -67,6 +69,19 @@ sub parse_enamdict
         }
     }
     close $in or die $!;
+}
+
+sub read_names
+{
+    my @inputs;
+    open my $in, "<:utf8", 'split-names.txt' or die $!;
+    while (<$in>) {
+	chomp;
+	my ($name, $surname, $given) = split /\s/, $_;
+	push @inputs, [$name, $surname, $given];
+    }
+    close $in or die $!;
+    return \@inputs;
 }
 
 1;

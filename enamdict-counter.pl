@@ -2,8 +2,9 @@
 use warnings;
 use strict;
 use Lingua::JA::Moji ':all';
-use FindBin;
-my $input = "$FindBin::Bin/enamdict";
+use lib '.';
+use Enamdict;
+my $input = $Enamdict::enamdict;
 open my $in, "<:encoding(EUC-JP)", $input or die $!;
 binmode STDOUT, ":utf8";
 my %given;

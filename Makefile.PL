@@ -13,12 +13,16 @@ WriteMakefile (
     AUTHOR => 'Ben Bullock <bkb@cpan.org>',
     LICENSE => 'perl',
     PREREQ_PM => {
-        'Lingua::JA::Moji' => '0.15',
+        'Lingua::JA::Moji' => '0.42',
     },
+    EXE_FILES => [
+	'script/splitjname',
+    ],
     META_MERGE => {
         resources => {
             repository => $repo,
             bugtracker => "$repo/issues",
         },
     },
+    MIN_PERL_VERSION => '5.008009',
 );

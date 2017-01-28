@@ -1,10 +1,11 @@
 package Lingua::JA::Name::Splitter;
-require Exporter;
-@ISA = qw(Exporter);
-@EXPORT_OK = qw/split_kanji_name split_romaji_name/;
 use warnings;
 use strict;
-our $VERSION = 0.05;
+require Exporter;
+our @ISA = qw(Exporter);
+our @EXPORT_OK = qw/split_kanji_name split_romaji_name/;
+our %EXPORT_TAGS = ('all' => \@EXPORT_OK);
+our $VERSION = '0.08';
 use utf8;
 use Carp;
 use Lingua::JA::Moji ':all';
@@ -25,7 +26,7 @@ close $in or die $!;
 # The weight to give the position in the kanji if it is a known
 # kanji.
 
-our $length_weight = 0.73;
+our $length_weight = 0.736; # 42030 successes
 
 # The cutoff for splitting the name
 
@@ -37,7 +38,7 @@ sub split_kanji_name
     my $given;
     my $family;
     if (length $kanji == 2) {
-        ($given, $family) = split '', $kanji;
+        ($family, $given) = split '', $kanji;
         goto finished;
     }
 

@@ -1,0 +1,16 @@
+use warnings;
+use strict;
+use utf8;
+use FindBin '$Bin';
+use Test::More;
+my $builder = Test::More->builder;
+binmode $builder->output,         ":utf8";
+binmode $builder->failure_output, ":utf8";
+binmode $builder->todo_output,    ":utf8";
+binmode STDOUT, ":encoding(utf8)";
+binmode STDERR, ":encoding(utf8)";
+use Deploy 'older';
+my $prob = "$Bin/../lib/Lingua/JA/Name/probabilities.txt";
+my $enamdict = "/home/ben/data/edrdg/enamdict";
+ok (older ($enamdict, $prob), "$enamdict is older than $prob");
+done_testing ();
