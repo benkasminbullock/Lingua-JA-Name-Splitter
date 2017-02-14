@@ -4,7 +4,6 @@ our @EXPORT_OK = qw/parse_enamdict read_names/;
 use warnings;
 use strict;
 use Carp;
-use FindBin;
 use Lingua::JA::Moji ':all';
 
 our $enamdict = '/home/ben/data/edrdg/enamdict';
