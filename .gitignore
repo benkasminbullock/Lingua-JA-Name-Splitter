@@ -7,3 +7,5 @@ split-names.txt
 # Generated from MANIFEST.SKIP
 MANIFEST
 examples/*-out.txt
+Lingua-JA-Name-Splitter-[0-9]*
+README
