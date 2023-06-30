@@ -37,22 +37,22 @@ sub split_kanji_name
     my ($kanji) = @_;
     # Validate the user's input
     if (! $kanji) {
-	carp "No valid name was provided to split_kanji_name";
-	return undef;
+        carp "No valid name was provided to split_kanji_name";
+        return undef;
     }
     if (length $kanji == 1) {
-	carp "$kanji is only one character long, so there is nothing to split";
-	return ($kanji, '');
+        carp "$kanji is only one character long, so there is nothing to split";
+        return ($kanji, '');
     }
-    if ($kanji !~ /^(\p{InCJKUnifiedIdeographs}|\p{InKana})+$/) {
-	carp "$kanji does not look like a kanji/kana name";
+    if ($kanji !~ /^(\p{InCJKUnifiedIdeographs}|々|\p{InKana})+$/) {
+        carp "$kanji does not look like a kanji/kana name";
     }
     if (! wantarray ()) {
         carp "The return value of split_kanji_name is an array";
     }
     # If the name is only two characters, there is only one possibility.
     if (length $kanji == 2) {
-	return split '', $kanji;
+        return split '', $kanji;
     }
 
     # What we guess is the given name part of the name
@@ -80,6 +80,10 @@ sub split_kanji_name
         elsif ($known{$moji}) {
             $p = $length_weight * $p + (1 - $length_weight) * $known{$moji};
         }
+        elsif ($moji eq '々') {
+            # This repeated kanji has the same probability as the original kanji
+            $p = $probability[$i - 1];
+        }
         $probability[$i] = $p;
     }
 #    print "@probability\n";
@@ -103,8 +107,8 @@ sub split_romaji_name
 {
     my ($name) = @_;
     if (! $name) {
-	carp "No name given to split_romaji_name";
-	return undef;
+        carp "No name given to split_romaji_name";
+        return undef;
     }
     if (! wantarray ()) {
         carp "The return value of split_romaji_name is an array";
@@ -129,11 +133,11 @@ sub split_romaji_name
         # Remove leading and trailing spaces.
         $name =~ s/^\s+|\s+$//g;
         my @parts = split /,?\s+/, $name;
-	for (@parts) {
-	    if (! is_romaji_strict ($_)) {
-		carp "'$_' doesn't look like Japanese romaji";
-	    }
-	}
+        for (@parts) {
+            if (! is_romaji_strict ($_)) {
+                carp "'$_' doesn't look like Japanese romaji";
+            }
+        }
         # If there are more than two parts to the name after splitting by spaces
         if (@parts > 2) {
             carp "Strange Japanese name '$name' with middle name?";

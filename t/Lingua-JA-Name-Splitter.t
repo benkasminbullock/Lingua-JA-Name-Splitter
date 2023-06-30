@@ -1,9 +1,11 @@
 use warnings;
 use strict;
-use Test::More;# tests;# => 3;
+use Test::More;# tests;# => 20;
+use Test::Warnings;
 BEGIN { use_ok('Lingua::JA::Name::Splitter') };
 use Lingua::JA::Name::Splitter qw/split_kanji_name split_romaji_name/;
 use utf8;
+use open qw(:std :encoding(UTF-8)); # For warnings
 
 my $builder = Test::More->builder;
 binmode $builder->output,         ":utf8";
@@ -21,6 +23,7 @@ my %names = (
     団令子 => 1,
     風太郎 => 1,
     杉浦則夫 => 2,
+    佐々木順平 => 3
 );
 
 for my $name (keys %names) {
