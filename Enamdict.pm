@@ -9,50 +9,52 @@ use Lingua::JA::Moji ':all';
 our $enamdict = '/home/ben/data/edrdg/enamdict';
 
 my $kanji_re = qr/
-                     (
-                         (?:
-                             \p{InCJKUnifiedIdeographs}
-                         |
-                             \p{InCJKSymbolsAndPunctuation}
-                         |
-                             \p{InHiragana}
-                         |
-                             \p{InKatakana}
-                         |
-                             \p{InWideAscii}
-                         )+
-                     )
-                 /x;
+    (
+	(?:
+	    \p{InCJKUnifiedIdeographs}
+	|
+	    \p{InCJKSymbolsAndPunctuation}
+	|
+	    \p{InHiragana}
+	|
+	    \p{InKatakana}
+	|
+	    \p{InWideAscii}
+	)+
+    )
+/x;
 
 my $pron_re = qr/
-                    \s*\[
-                    (
-                        (?:
-                            \p{InHiragana}
-                        |
-                            \p{InKatakana}
-                        )+
-                    )
-                    \]\s*
-                /x;
+    \s*\[
+    (
+	(?:
+	    \p{InHiragana}
+	|
+	    \p{InKatakana}
+	)+
+    )
+    \]\s*
+/x;
 
 my $type_re = qr!
-                    \s*/.*?\(([a-z,]+)\).*?/\s*
-                !x;
+    \s*/.*?\(([a-z,]+)\).*?/\s*
+!x;
 
-my $kanji_name_re = qr!^
-                  $kanji_re
-                  $pron_re
-                  $type_re
-                  $
-                 !x;
+my $kanji_name_re = qr!
+    ^
+    $kanji_re
+    $pron_re
+    $type_re
+    $
+!x;
 
-my $kana_re = qr!^
-                 \p{InKana}+
-                 $pron_re
-                 $type_re
-                 $
-                !x;
+my $kana_re = qr!
+    ^
+    \p{InKana}+
+    $pron_re
+    $type_re
+    $
+!x;
 
 sub parse_enamdict
 {

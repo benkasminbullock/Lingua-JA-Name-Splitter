@@ -21,6 +21,7 @@ my %names = (
     団令子 => 1,
     風太郎 => 1,
     杉浦則夫 => 2,
+    佐々木順平 => 3,
 );
 
 for my $name (keys %names) {

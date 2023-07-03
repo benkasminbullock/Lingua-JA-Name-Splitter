@@ -5,6 +5,7 @@ use Template;
 use FindBin '$Bin';
 use Perl::Build qw/get_info get_commit/;
 use Perl::Build::Pod ':all';
+use lib $Bin;
 use Enamdict;
 use BKB::Stuff;
 

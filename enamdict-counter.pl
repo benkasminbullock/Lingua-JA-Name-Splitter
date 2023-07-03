@@ -4,44 +4,41 @@ use strict;
 use Lingua::JA::Moji ':all';
 use lib '.';
 use Enamdict;
+use FindBin '$Bin';
+use lib "$Bin/lib";
+use Lingua::JA::Name::Splitter '$kkre';
 my $input = $Enamdict::enamdict;
 open my $in, "<:encoding(EUC-JP)", $input or die $!;
 binmode STDOUT, ":utf8";
 my %given;
 my %family;
+
 my $kanji_re = qr/
-                     (
-                         (?:
-                             \p{InCJKUnifiedIdeographs}
-                         |
-                             \p{InCJKSymbolsAndPunctuation}
-                         |
-                             \p{InHiragana}
-                         |
-                             \p{InKatakana}
-                         |
-                             \p{InWideAscii}
-                         )+
-                     )
-                 /x;
+    (
+	(?:
+	    $kkre
+	)+
+    )
+/x;
+
 
 my $pron_re = qr/
-                    \s*\[
-                    (?:
-                        \p{InHiragana}
-                    |
-                        \p{InKatakana}
-                    )+
-                    \]\s*
-                /x;
+    \s*\[
+    (?:
+	\p{InHiragana}
+    |
+	\p{InKatakana}
+    )+
+    \]\s*
+/x;
 
 my $type_re = qr!
-                    \s*/.*?\(([a-z,]+)\).*?/\s*
-                !x;
+    \s*/.*?\(([a-z,]+)\).*?/\s*
+!x;
 
 while (<$in>) {
     if (m!^
-          $kanji_re
+	  $kanji_re
           $pron_re
           $type_re
           $
@@ -51,18 +48,18 @@ while (<$in>) {
         do_types ($kanji, $type);
     }
     elsif (m!
-                \p{InKana}+
-                $pron_re
-                $type_re
-            !x) {
+	\p{InKana}+
+	$pron_re
+	$type_re
+    !x) {
         next;
     }
     elsif (m!
-                ^
-                \p{InKana}+
-.*
-                $
-            !x) {
+	^
+	\p{InKana}+
+	.*
+	$
+    !x) {
         next;
     }
     elsif (m!\(p\)!) {

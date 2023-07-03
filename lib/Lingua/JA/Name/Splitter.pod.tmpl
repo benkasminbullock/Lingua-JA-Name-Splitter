@@ -36,6 +36,13 @@ and family names.
 
 =head1 FUNCTIONS
 
+=head2 kkname
+
+    my $iskk = kkname ($kanjiname);
+
+This returns a true value if C<$kanjiname> appears to be a kanji/kana
+name, and false if not.
+
 =head2 split_kanji_name
 
     my ($family, $given) = split_kanji_name ('渡辺純子');

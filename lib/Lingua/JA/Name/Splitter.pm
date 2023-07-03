@@ -1,11 +1,12 @@
 package Lingua::JA::Name::Splitter;
+
 use warnings;
 use strict;
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw/split_kanji_name split_romaji_name/;
+our @EXPORT_OK = qw/split_kanji_name split_romaji_name $kkre kkname/;
 our %EXPORT_TAGS = ('all' => \@EXPORT_OK);
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 use utf8;
 use Carp;
 use Lingua::JA::Moji ':all';
@@ -32,6 +33,32 @@ our $length_weight = 0.736; # 42030 successes
 
 our $split_cutoff = 0.5;
 
+# Set this to a true value to print debugging messages.
+
+my $debug;
+
+=head2 $kkre
+
+    Kanji-kana regular expression. This is intended to match kanji and
+    kana names.
+
+=cut
+
+our $kkre = qr!
+    \p{InCJKUnifiedIdeographs}|
+    [々〆]|
+    \p{InKana}
+!x;
+
+sub kkname
+{
+    my ($kanji) = @_;
+    if ($kanji !~ /^($kkre)+$/) {
+	return undef;
+    }
+    return 1;
+}
+
 sub split_kanji_name
 {
     my ($kanji) = @_;
@@ -44,7 +71,7 @@ sub split_kanji_name
 	carp "$kanji is only one character long, so there is nothing to split";
 	return ($kanji, '');
     }
-    if ($kanji !~ /^(\p{InCJKUnifiedIdeographs}|\p{InKana})+$/) {
+    if (! kkname ($kanji)) {
 	carp "$kanji does not look like a kanji/kana name";
     }
     if (! wantarray ()) {
@@ -80,10 +107,17 @@ sub split_kanji_name
         elsif ($known{$moji}) {
             $p = $length_weight * $p + (1 - $length_weight) * $known{$moji};
         }
+        elsif ($moji eq '々') {
+            # This repeated kanji has the same probability as the
+            # original kanji
+            $p = $probability[$i - 1];
+        }
         $probability[$i] = $p;
     }
-#    print "@probability\n";
-#    print "@kanji\n";
+    if ($debug) {
+	print "@probability\n";
+	print "@kanji\n";
+    }
     my $in_given;
     for my $i (0..$#kanji) {
         if ($probability[$i] < $split_cutoff) {
