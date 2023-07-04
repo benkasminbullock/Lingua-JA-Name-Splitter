@@ -1,5 +1,9 @@
 Revision history for perl module Lingua::JA::Name::Splitter
 
+0.11 2023-07-04
+
+* Update Enamdict to the latest version
+
 0.10 2023-07-03
 
 * Added repetition mark (rafork@github) and shime

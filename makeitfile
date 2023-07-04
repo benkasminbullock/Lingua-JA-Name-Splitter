@@ -3,6 +3,9 @@ ENAMDICT=/home/ben/data/edrdg/enamdict
 lib/Lingua/JA/Name/probabilities.txt: $(ENAMDICT) enamdict-counter.pl Enamdict.pm
 	perl enamdict-counter.pl > $@
 
+clean:
+	purge -r
+
 # Local variables:
 # mode: makefile
 # End:

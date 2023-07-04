@@ -6,7 +6,7 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw/split_kanji_name split_romaji_name $kkre kkname/;
 our %EXPORT_TAGS = ('all' => \@EXPORT_OK);
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 use utf8;
 use Carp;
 use Lingua::JA::Moji ':all';
@@ -27,7 +27,7 @@ close $in or die $!;
 # The weight to give the position in the kanji if it is a known
 # kanji.
 
-our $length_weight = 0.736; # 42030 successes
+our $length_weight = 0.735; # 42030 successes
 
 # The cutoff for splitting the name
 
