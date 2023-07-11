@@ -35,7 +35,8 @@ our $split_cutoff = 0.5;
 
 # Set this to a true value to print debugging messages.
 
-my $debug;
+#my $debug = 1;
+#use open qw(:std :encoding(UTF-8));a # when debugging
 
 =head2 $kkre
 
@@ -82,10 +83,6 @@ sub split_kanji_name
 	return split '', $kanji;
     }
 
-    # What we guess is the given name part of the name
-    my $given;
-    # What we guess is the family name part of the name
-    my $family;
     # The characters in the name, which may not be kanji.
     my @kanji = split '', $kanji;
     # Probability this character is part of the family name.
@@ -113,24 +110,14 @@ sub split_kanji_name
             $p = $probability[$i - 1];
         }
         $probability[$i] = $p;
-    }
-    if ($debug) {
-	print "@probability\n";
-	print "@kanji\n";
-    }
-    my $in_given;
-    for my $i (0..$#kanji) {
+        #if ($debug) { # Commented out to improve test coverage
+        #    print STDERR "$kanji[$i] i=$i p=$p\n";
+        #}
         if ($probability[$i] < $split_cutoff) {
-            $in_given = 1;
-        }
-        if ($in_given) {
-            $given .= $kanji[$i];
-        }
-        else {
-            $family .= $kanji[$i];
+            return (substr ($kanji, 0, $i), substr ($kanji, $i));
         }
     }
-    return ($family, $given);
+    return (substr ($kanji, 0, -1), substr ($kanji, -1));
 }
 
 sub split_romaji_name
