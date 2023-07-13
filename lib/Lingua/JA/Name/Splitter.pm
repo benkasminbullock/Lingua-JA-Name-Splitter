@@ -6,7 +6,7 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw/split_kanji_name split_romaji_name $kkre kkname/;
 our %EXPORT_TAGS = ('all' => \@EXPORT_OK);
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 use utf8;
 use Carp;
 use Lingua::JA::Moji ':all';
